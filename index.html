@@ -1,15 +1,62 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ALDI DX</title>
-    <link rel="stylesheet" href="/src/style.css" />
-  </head>
-  <body>
-    <div id="app">
-        <img src="./assets/logo_aldi.jpg"/>
-    </div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Tasks</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <aside class="sidebar">
+    <h2 class="logo">To-Do</h2>
+    <nav class="menu">
+      <div class="menu-item">Dashboard</div>
+      <div class="menu-item">Vital Task</div>
+      <div class="menu-item active">My Task</div>
+      <div class="menu-item">Task Categories</div>
+      <div class="menu-item">Settings</div>
+      <div class="menu-item">Help</div>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="header">
+      <h1>My Tasks</h1>
+    </header>
+
+    <section class="content">
+      <div class="task-list">
+        <div class="task-item selected">
+          <strong>Submit Documents</strong>
+          <p>Make sure to submit all necessary documents.</p>
+        </div>
+
+        <div class="task-item">
+          <strong>Complete Assignments</strong>
+          <p>The assignments must be completed soon.</p>
+        </div>
+
+        <div class="task-item">
+          <strong>Project Planning</strong>
+          <p>Prepare the first draft of requirements.</p>
+        </div>
+      </div>
+
+      <div class="task-details">
+        <h3>Submit Documents</h3>
+
+        <p><strong>Priority:</strong> High</p>
+        <p><strong>Status:</strong> Not Started</p>
+
+        <p><strong>Description:</strong>  
+          Review the list of required documents and ensure everything is prepared and ready for submission.
+        </p>
+
+        <p><strong>Note:</strong> Prepare digital copies if needed and confirm accuracy before submission.</p>
+      </div>
+    </section>
+  </main>
+
+</body>
 </html>
