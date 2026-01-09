@@ -129,3 +129,128 @@ body {
     width: 100%;
   }
 }
+
+/* ========== FLOATING ADD BUTTON ========== */
+.add-task-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+
+  width: 56px;
+  height: 56px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: #ef6969;
+  color: white;
+
+  font-size: 32px;
+  cursor: pointer;
+
+  box-shadow: 0 10px 20px rgba(0,0,0,0.18);
+}
+
+.add-task-btn:hover {
+  filter: brightness(0.95);
+}
+
+/* ========== MODAL OVERLAY (full screen background) ========== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;                  /* top:0 right:0 bottom:0 left:0 */
+  background: rgba(0,0,0,0.45);
+
+  /* Hidden by default */
+  display: none;
+
+  /* Center the modal */
+  align-items: center;
+  justify-content: center;
+
+  padding: 18px;
+  z-index: 999;
+}
+
+/* When we add class="show", it becomes visible */
+.modal-overlay.show {
+  display: flex;
+}
+
+/* ========== MODAL BOX ========== */
+.modal-box {
+  width: min(520px, 100%);
+  background: white;
+
+  border-radius: 16px;
+  border: 1px solid #e1e3e8;
+
+  padding: 18px;
+}
+
+.modal-box h2 {
+  margin-bottom: 12px;
+  color: #222;
+}
+
+/* ========== FORM ========== */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  font-size: 14px;
+  color: #333;
+}
+
+.modal-form input,
+.modal-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+
+  border-radius: 10px;
+  border: 1px solid #ddd;
+
+  font-size: 14px;
+  background: #fafafa;
+  outline: none;
+}
+
+.modal-form input:focus,
+.modal-form textarea:focus {
+  border-color: #ef6969;
+  background: white;
+}
+
+/* ========== BUTTONS ========== */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn.primary {
+  background: #ef6969;
+  color: white;
+}
+
+.btn.secondary {
+  background: #f2f2f2;
+  color: #333;
+  border-color: #ddd;
+}
