@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Tasks</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
 
@@ -49,14 +49,104 @@
         <p><strong>Priority:</strong> High</p>
         <p><strong>Status:</strong> Not Started</p>
 
-        <p><strong>Description:</strong>  
+        <p><strong>Description:</strong>
           Review the list of required documents and ensure everything is prepared and ready for submission.
         </p>
 
         <p><strong>Note:</strong> Prepare digital copies if needed and confirm accuracy before submission.</p>
       </div>
     </section>
+
+    <!-- Floating Add Task Button -->
+    <button class="add-task-button" id="openModalBtn" aria-label="Add new task">+</button>
+
+    <!-- Modal Overlay (hidden by default) -->
+    <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+      <!-- Modal Box -->
+      <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <h2 id="modalTitle">Add New Task</h2>
+
+        <form class="modal-form" id="newTaskForm">
+          <label>
+            Task Title
+            <input type="text" placeholder="Enter task title" />
+          </label>
+
+          <label>
+            Objective
+            <input type="text" placeholder="Enter objective" />
+          </label>
+
+          <label>
+            Task Description
+            <textarea rows="4" placeholder="Enter task description"></textarea>
+          </label>
+
+          <label>
+            Priority
+            <input type="text" placeholder="High / Medium / Low" />
+          </label>
+
+          <label>
+            Status
+            <input type="text" placeholder="Not Started / In Progress" />
+          </label>
+
+          <label>
+            Date
+            <input type="text" placeholder="15/12/2025" />
+          </label>
+
+          <div class="modal-actions">
+            <!-- IMPORTANT: id must match JS exactly -->
+            <button type="button" class="btn secondary" id="closeModalBtn">Go Back</button>
+            <button type="submit" class="btn primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
   </main>
+
+  <script>
+    // Grab elements (IDs must match the HTML EXACTLY)
+    const openModalBtn = document.getElementById("openModalBtn");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const modalOverlay = document.getElementById("modalOverlay");
+    const newTaskForm = document.getElementById("newTaskForm");
+
+    function openModal() {
+      modalOverlay.classList.add("show");
+      modalOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeModal() {
+      modalOverlay.classList.remove("show");
+      modalOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    openModalBtn.addEventListener("click", openModal);
+    closeModalBtn.addEventListener("click", closeModal);
+
+    // close when clicking outside the box
+    modalOverlay.addEventListener("click", function (event) {
+      if (event.target === modalOverlay) {
+        closeModal();
+      }
+    });
+
+    // close on Escape key
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    });
+
+    // Save does nothing (prevents page reload)
+    newTaskForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+    });
+  </script>
 
 </body>
 </html>
