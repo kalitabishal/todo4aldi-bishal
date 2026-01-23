@@ -26,25 +26,32 @@
     </header>
 
     <section class="content">
-      <div class="task-list">
-        <div class="task-item selected">
-          <strong>Submit Documents</strong>
-          <p>Make sure to submit all necessary documents.</p>
-        </div>
+      <div class="task-list" id="taskList">
+  <div class="task-item selected">
+    <strong>Submit Documents</strong>
+    <p>Make sure to submit all necessary documents.</p>
+  </div>
 
-        <div class="task-item">
-          <strong>Complete Assignments</strong>
-          <p>The assignments must be completed soon.</p>
-        </div>
+  <div class="task-item">
+    <strong>Complete Assignments</strong>
+    <p>The assignments must be completed soon.</p>
+  </div>
 
-        <div class="task-item">
-          <strong>Project Planning</strong>
-          <p>Prepare the first draft of requirements.</p>
-        </div>
-      </div>
+  <div class="task-item">
+    <strong>Project Planning</strong>
+    <p>Prepare the first draft of requirements.</p>
+  </div>
+
+  <!-- Add Task button BELOW the last task -->
+  <button class="add-task-button" id="openModalBtn" type="button">
+    + Add Task
+  </button>
+</div>
 
       <div class="task-details">
         <h3>Submit Documents</h3>
+
+        
 
         <p><strong>Priority:</strong> High</p>
         <p><strong>Status:</strong> Not Started</p>
@@ -57,8 +64,7 @@
       </div>
     </section>
 
-    <!-- Floating Add Task Button -->
-    <button class="add-task-button" id="openModalBtn" aria-label="Add new task">+</button>
+    
 
     <!-- Modal Overlay (hidden by default) -->
     <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
@@ -69,32 +75,32 @@
         <form class="modal-form" id="newTaskForm">
           <label>
             Task Title
-            <input type="text" placeholder="Enter task title" />
+            <input id="taskTitle" type="text" placeholder="Enter task title" />
           </label>
 
           <label>
             Objective
-            <input type="text" placeholder="Enter objective" />
+            <input id="taskObjective" type="text" placeholder="Enter objective" />
           </label>
 
           <label>
             Task Description
-            <textarea rows="4" placeholder="Enter task description"></textarea>
+            <textarea id="taskDescription" rows="4" placeholder="Enter task description"></textarea>
           </label>
 
           <label>
             Priority
-            <input type="text" placeholder="High / Medium / Low" />
+            <input id="taskPriority" type="text" placeholder="High / Medium / Low" />
           </label>
 
           <label>
             Status
-            <input type="text" placeholder="Not Started / In Progress" />
+            <input id="taskStatus" type="text" placeholder="Not Started / In Progress" />
           </label>
 
           <label>
             Date
-            <input type="text" placeholder="15/12/2025" />
+            <input id="taskDate" type="text" placeholder="15/12/2025" />
           </label>
 
           <div class="modal-actions">
@@ -108,45 +114,150 @@
 
   </main>
 
-  <script>
-    // Grab elements (IDs must match the HTML EXACTLY)
-    const openModalBtn = document.getElementById("openModalBtn");
-    const closeModalBtn = document.getElementById("closeModalBtn");
-    const modalOverlay = document.getElementById("modalOverlay");
-    const newTaskForm = document.getElementById("newTaskForm");
+<script>
+  // =========================
+  // 1) GET ELEMENTS (once)
+  // =========================
+  const openModalBtn = document.getElementById("openModalBtn");
+  const closeModalBtn = document.getElementById("closeModalBtn");
+  const modalOverlay = document.getElementById("modalOverlay");
+  const newTaskForm = document.getElementById("newTaskForm");
 
-    function openModal() {
-      modalOverlay.classList.add("show");
-      modalOverlay.setAttribute("aria-hidden", "false");
+  const taskList = document.getElementById("taskList");
+
+  // Form inputs
+  const taskTitleInput = document.getElementById("taskTitle");
+  const taskObjectiveInput = document.getElementById("taskObjective");
+  const taskDescriptionInput = document.getElementById("taskDescription");
+  const taskPriorityInput = document.getElementById("taskPriority");
+  const taskStatusInput = document.getElementById("taskStatus");
+  const taskDateInput = document.getElementById("taskDate");
+
+  // localStorage key (like a "folder name" in the browser storage)
+  const STORAGE_KEY = "todo_tasks";
+
+  // =========================
+  // 2) MODAL OPEN/CLOSE
+  // =========================
+  function openModal() {
+    modalOverlay.classList.add("show");
+    modalOverlay.setAttribute("aria-hidden", "false");
+  }
+
+  function closeModal() {
+    modalOverlay.classList.remove("show");
+    modalOverlay.setAttribute("aria-hidden", "true");
+  }
+
+  openModalBtn.addEventListener("click", openModal);
+  closeModalBtn.addEventListener("click", closeModal);
+
+  // click outside modal box closes modal
+  modalOverlay.addEventListener("click", function (event) {
+    if (event.target === modalOverlay) closeModal();
+  });
+
+  // Escape closes modal
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") closeModal();
+  });
+
+  // =========================
+  // 3) localStorage HELPERS
+  // =========================
+  function getSavedTasks() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+
+    // if nothing saved yet, return empty array
+    if (!raw) return [];
+
+    // raw is a string -> convert back to array of objects
+    return JSON.parse(raw);
+  }
+
+  function saveTasks(tasksArray) {
+    // convert array -> string for storage
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasksArray));
+  }
+
+  // =========================
+  // 4) CREATE TASK CARD (DOM)
+  // =========================
+  function createTaskCard(task) {
+    // task-item card
+    const card = document.createElement("div");
+    card.className = "task-item";
+
+    // title
+    const title = document.createElement("strong");
+    title.textContent = task.title;
+
+    // short text under title (use objective or description)
+    const text = document.createElement("p");
+    text.textContent = task.objective || task.description || "";
+
+    card.appendChild(title);
+    card.appendChild(text);
+
+    return card;
+  }
+
+  function addTaskCardToList(task) {
+    const card = createTaskCard(task);
+    taskList.appendChild(card);
+  }
+
+  // =========================
+  // 5) LOAD SAVED TASKS ON PAGE LOAD
+  // =========================
+  function loadTasksFromStorage() {
+    const tasks = getSavedTasks();
+
+    // render each task into the list
+    tasks.forEach(addTaskCardToList);
+  }
+
+  // Run once when page loads
+  loadTasksFromStorage();
+
+  // =========================
+  // 6) HANDLE "SAVE" (FORM SUBMIT)
+  // =========================
+  newTaskForm.addEventListener("submit", function (event) {
+    event.preventDefault(); // prevents page refresh
+
+    // collect input values
+    const newTask = {
+      id: Date.now(), // simple unique id
+      title: taskTitleInput.value.trim(),
+      objective: taskObjectiveInput.value.trim(),
+      description: taskDescriptionInput.value.trim(),
+      priority: taskPriorityInput.value.trim(),
+      status: taskStatusInput.value.trim(),
+      date: taskDateInput.value.trim()
+    };
+
+    // basic validation: title required
+    if (!newTask.title) {
+      alert("Please enter a Task Title.");
+      return;
     }
 
-    function closeModal() {
-      modalOverlay.classList.remove("show");
-      modalOverlay.setAttribute("aria-hidden", "true");
-    }
+    // 1) add card to the page immediately
+    addTaskCardToList(newTask);
 
-    openModalBtn.addEventListener("click", openModal);
-    closeModalBtn.addEventListener("click", closeModal);
+    // 2) save to localStorage
+    const tasks = getSavedTasks();
+    tasks.push(newTask);
+    saveTasks(tasks);
 
-    // close when clicking outside the box
-    modalOverlay.addEventListener("click", function (event) {
-      if (event.target === modalOverlay) {
-        closeModal();
-      }
-    });
+    // 3) clear form inputs
+    newTaskForm.reset();
 
-    // close on Escape key
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") {
-        closeModal();
-      }
-    });
-
-    // Save does nothing (prevents page reload)
-    newTaskForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-    });
-  </script>
+    // 4) close modal
+    closeModal();
+  });
+</script>
 
 </body>
 </html>
