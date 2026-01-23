@@ -49,7 +49,7 @@
         <p><strong>Priority:</strong> High</p>
         <p><strong>Status:</strong> Not Started</p>
 
-        <p><strong>Description:</strong>  
+        <p><strong>Description:</strong>
           Review the list of required documents and ensure everything is prepared and ready for submission.
         </p>
 
@@ -57,31 +57,28 @@
       </div>
     </section>
 
-    <!-- TASK BUTTON -->
-     <button class = "add-task-button" id="openModalBtn" aria-label = "Add new Task">
-      +
-      </button>
-<!--MODAL hidden-->>
-<!--Overlay to cover the screen-->>
-      <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
-        <!--Modal Box centered-->
-        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-          <h2 id="modalTitle" Add New Task></h2>>
+    <!-- Floating Add Task Button -->
+    <button class="add-task-button" id="openModalBtn" aria-label="Add new task">+</button>
 
-          <!--Form-->
-         <form class="modal-form" id="newTaskForm">
+    <!-- Modal Overlay (hidden by default) -->
+    <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+      <!-- Modal Box -->
+      <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <h2 id="modalTitle">Add New Task</h2>
+
+        <form class="modal-form" id="newTaskForm">
           <label>
-            Task Title 
-            <input type="text" placeholder="Enter task title"/>
+            Task Title
+            <input type="text" placeholder="Enter task title" />
           </label>
 
           <label>
             Objective
-            <input type="text" placeholder="Enter Objective" />
+            <input type="text" placeholder="Enter objective" />
           </label>
 
           <label>
-            Task Description 
+            Task Description
             <textarea rows="4" placeholder="Enter task description"></textarea>
           </label>
 
@@ -92,73 +89,64 @@
 
           <label>
             Status
-            <input type="text" placeholder="Not started / In Progress" />
+            <input type="text" placeholder="Not Started / In Progress" />
           </label>
 
           <label>
-            Date 
-            <input type="text" placeholder="15/1272025" />
+            Date
+            <input type="text" placeholder="15/12/2025" />
           </label>
 
           <div class="modal-actions">
-            <button type="button" class="btn secondary" id="closeModalbtn">
-              Go Back
-              </button>
+            <!-- IMPORTANT: id must match JS exactly -->
+            <button type="button" class="btn secondary" id="closeModalBtn">Go Back</button>
+            <button type="submit" class="btn primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
-              <button type="submit" class="btn primary">
-                Save
-              </button>
-             </div>
-         </form>
-        </div>
-      </div> 
-</main>
+  </main>
 
-<!--Javascript-->
-<script>
-  // 1) Get Elements with ID 
-  const openModalBtn = document.getElementById("openModalBtN");
-  const closeModalbtn = document.getElementById("closeModalBtn");
-  const modalOverlay = document.getElementById("modalOverlay");
-  const newTaskForm = document.getElementById("newTaskForm");
+  <script>
+    // Grab elements (IDs must match the HTML EXACTLY)
+    const openModalBtn = document.getElementById("openModalBtn");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const modalOverlay = document.getElementById("modalOverlay");
+    const newTaskForm = document.getElementById("newTaskForm");
 
-  // 2) Function : show the Modal
-  function openModal(){
-    // show Overlay
-    modalOverlay.classList.add("show");
-  // Update aria-hidden to false 
-    modalOverlay.setAttribute("aria-hidden", "false");
-  }
-  // 3) Function : hide the modal
-  function closeModal(){
-    modalOverlay.classList.remove("show");
-    modalOverlay.setAttribute("aria-hidden", "true");
-  }
-
-  // 4) When user clicks the the + button - open modal
-  openModalBtn.addEventListener("click", openModal);
-
-  // 5) When user clicks Go Back - close modal 
-  closeModalbtn.addEventListener("click", closeModal);
-
-  // 6) If the user clicks outside the modal box - close 
-  modalOverlay.addEventListener("click", function (event){
-    if (event.target === modalOverlay) {
-      closeModal();
+    function openModal() {
+      modalOverlay.classList.add("show");
+      modalOverlay.setAttribute("aria-hidden", "false");
     }
-  });
 
-  // 7) If the user presses the esc key - close 
-  document.addEventListener("keydown", function(event) {
-    if (event.key === modalOverlay){
-      closeModal();
+    function closeModal() {
+      modalOverlay.classList.remove("show");
+      modalOverlay.setAttribute("aria-hidden", "true");
     }
-  });
 
-  newTaskForm.addEventListener("submit", function(event){
-    event.preventDefault();
-  })
+    openModalBtn.addEventListener("click", openModal);
+    closeModalBtn.addEventListener("click", closeModal);
 
+    // close when clicking outside the box
+    modalOverlay.addEventListener("click", function (event) {
+      if (event.target === modalOverlay) {
+        closeModal();
+      }
+    });
+
+    // close on Escape key
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    });
+
+    // Save does nothing (prevents page reload)
+    newTaskForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+    });
   </script>
-  </body>
+
+</body>
 </html>
